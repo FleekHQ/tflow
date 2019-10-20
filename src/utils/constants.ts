@@ -1,0 +1,8 @@
+export const MASTER_BRANCH = 'master'
+export const DEVELOP_BRANCH = 'develop'
+export const DEFAULT_REMOTE = 'origin'
+export const EPIC_BRANCH_PREFIX = 'epic'
+export const FEATURE_BRANCH_PREFIX = 'feature'
+export const RELEASE_BRANCH_PREFIX = 'release'
+export const HOTFIX_BRANCH_PREFIX = 'hotfix'
+export const KANBAN_URL = 'https://app.clubhouse.io/terminalsystems/story'
