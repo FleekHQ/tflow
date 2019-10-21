@@ -1,7 +1,7 @@
 {
   "name": "terminal-flow",
   "description": "Git flow adapted by Terminal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Daniel Merrill @dmerrill6",
   "bin": {
     "tflow": "./bin/run"
