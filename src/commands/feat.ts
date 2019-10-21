@@ -92,12 +92,12 @@ export default class Feat extends Command {
       validate: (id: string) => id.match(/^[0-9a-zA-Z]+$/) ? true : false
     }, {
       name: 'name',
-      message: 'Write a short name for your task or feature ([0-9a-zA-Z]+)',
+      message: 'Write a short name for your task or feature ([0-9a-zA-Z-]+)',
       type: 'input',
-      validate: (name: string) => name.match(/^[0-9a-zA-Z]+$/) ? true : false
+      validate: (name: string) => name.match(/^[0-9a-zA-Z-]+$/) ? true : false
     }])
 
-    const newBranchName = `${FEATURE_BRANCH_PREFIX}/${epicName}/${branchResponse.id}-${branchResponse.name}`
+    const newBranchName = `${FEATURE_BRANCH_PREFIX}/${epicName}/${branchResponse.id}/${branchResponse.name}`
 
     await git.checkoutBranch(newBranchName, genEpicBranchName(epicName))
     this.log(`Created branch ${newBranchName} from ${genEpicBranchName(epicName)}`)
@@ -109,11 +109,10 @@ export default class Feat extends Command {
   async finish() {
     const localBranches = await git.branchLocal()
     const currBranch = localBranches.current
-    const [branchType, epicName, featName] = currBranch.split('/')
-    const [taskId] = featName.split('-')
+    const [branchType, epicName, taskId, featName] = currBranch.split('/')
     const epicBranch = `${EPIC_BRANCH_PREFIX}/${epicName}`
     if (!featName || branchType !== FEATURE_BRANCH_PREFIX) {
-      this.log(`Please checkout a feature branch. A feature branch has the following shape: ${FEATURE_BRANCH_PREFIX}/[EPIC_NAME]/[FEATURE_ID]-[FEATURE_NAME]`)
+      this.log(`Please checkout a feature branch. A feature branch has the following shape: ${FEATURE_BRANCH_PREFIX}/[EPIC_NAME]/[FEATURE_ID]/[FEATURE_NAME]`)
       return
     }
 

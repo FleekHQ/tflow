@@ -23,7 +23,7 @@ $ npm install -g terminal-flow
 $ tflow COMMAND
 running command...
 $ tflow (-v|--version|version)
-terminal-flow/0.0.1 darwin-x64 node-v10.16.3
+terminal-flow/0.0.2 darwin-x64 node-v10.16.3
 $ tflow --help [COMMAND]
 USAGE
   $ tflow COMMAND
@@ -89,7 +89,7 @@ EXAMPLES
   $ tflow feat finish: Finishes the feature and creates a PR towards the epic branch.
 ```
 
-_See code: [src/commands/feat.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.1/src/commands/feat.ts)_
+_See code: [src/commands/feat.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.2/src/commands/feat.ts)_
 
 ## `tflow help [COMMAND]`
 
@@ -124,7 +124,7 @@ EXAMPLES
   $ tflow hotfix finish: Finishes the hotfix and creates a PR towards dev and staging
 ```
 
-_See code: [src/commands/hotfix.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.1/src/commands/hotfix.ts)_
+_See code: [src/commands/hotfix.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.2/src/commands/hotfix.ts)_
 
 ## `tflow release [BRANCH]`
 
@@ -143,5 +143,5 @@ EXAMPLE
   $ tflow release develop
 ```
 
-_See code: [src/commands/release.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.1/src/commands/release.ts)_
+_See code: [src/commands/release.ts](https://github.com/Terminal-Systems/tflow/blob/v0.0.2/src/commands/release.ts)_
 <!-- commandsstop -->
