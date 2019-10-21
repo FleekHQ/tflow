@@ -46,7 +46,7 @@ export default class Hotfix extends Command {
       validate: (name: string) => name.match(/^[0-9a-zA-Z]+$/) ? true : false
     }])
 
-    const newBranchName = `${HOTFIX_BRANCH_PREFIX}/${branchResponse.id}-${branchResponse.name}`
+    const newBranchName = `${HOTFIX_BRANCH_PREFIX}/${branchResponse.id}/${branchResponse.name}`
 
     await git.checkoutBranch(newBranchName, MASTER_BRANCH)
     this.log(`Created branch ${newBranchName} from ${MASTER_BRANCH}. Pulling from origin...`)
@@ -59,10 +59,10 @@ export default class Hotfix extends Command {
   async finish() {
     const localBranches = await git.branchLocal()
     const currBranch = localBranches.current
-    const [branchType, hotfixName] = currBranch.split('/')
+    const [branchType, hotfixId, hotfixName] = currBranch.split('/')
 
     if (!hotfixName || branchType !== HOTFIX_BRANCH_PREFIX) {
-      this.log(`Please checkout a hotfix branch. A hotfix branch has the following shape: ${HOTFIX_BRANCH_PREFIX}/[HOTFIX_ID]-[HOTFIX_NAME]`)
+      this.log(`Please checkout a hotfix branch. A hotfix branch has the following shape: ${HOTFIX_BRANCH_PREFIX}/[HOTFIX_ID]/[HOTFIX_NAME]`)
       return
     }
 
@@ -77,13 +77,21 @@ export default class Hotfix extends Command {
       await git.push(DEFAULT_REMOTE, currBranch, {'--set-upstream': null})
     }
 
-    const taskId = hotfixName.split('-')[0]
-
     const masterRelease = `${MASTER_BRANCH}-${RELEASE_BRANCH_PREFIX}/${HOTFIX_BRANCH_PREFIX}/${hotfixName}`
-    await release(`title=Hotfix:+${hotfixName}+release+to+${MASTER_BRANCH}&body=${KANBAN_URL}/${taskId}`, currBranch, masterRelease, MASTER_BRANCH, this.log)
 
     const devRelease = `${DEVELOP_BRANCH}-${RELEASE_BRANCH_PREFIX}/${HOTFIX_BRANCH_PREFIX}/${hotfixName}`
-    await release(`title=Hotfix:+${hotfixName}+release+to+${DEVELOP_BRANCH}&body=${KANBAN_URL}/${taskId}`, currBranch, devRelease, DEVELOP_BRANCH, this.log)
+
+    try {
+      await release(`title=Hotfix:+${hotfixName}+release+to+${DEVELOP_BRANCH}&body=${KANBAN_URL}/${hotfixId}`, currBranch, devRelease, DEVELOP_BRANCH, this.log)
+    } catch (err) {
+      this.log(`Error while releasing to ${DEVELOP_BRANCH}, might be because of conflicts. Solve conflicts and run finish again. Error message: ${err.message}`)
+      return
+    }
+    try {
+      await release(`title=Hotfix:+${hotfixName}+release+to+${MASTER_BRANCH}&body=${KANBAN_URL}/${hotfixId}`, currBranch, masterRelease, MASTER_BRANCH, this.log)
+    } catch (err) {
+      this.log(`Error while releasing to ${MASTER_BRANCH}, might be because of conflicts: ${err.message}`)
+    }
   }
 
   async run() {

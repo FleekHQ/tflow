@@ -3,7 +3,6 @@ import * as simplegit from 'simple-git/promise'
 import {
   DEFAULT_REMOTE,
   EPIC_BRANCH_PREFIX,
-  RELEASE_BRANCH_PREFIX,
 } from './constants'
 
 const open = require('open')
