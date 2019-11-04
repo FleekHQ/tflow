@@ -46,7 +46,7 @@ export default class Hotfix extends Command {
       validate: (name: string) => name.match(/^[0-9a-zA-Z]+$/) ? true : false
     }])
 
-    const newBranchName = `${HOTFIX_BRANCH_PREFIX}/${branchResponse.id}/${branchResponse.name}`
+    const newBranchName = `${HOTFIX_BRANCH_PREFIX}/ch${branchResponse.id}/${branchResponse.name}`
 
     await git.checkoutBranch(newBranchName, MASTER_BRANCH)
     this.log(`Created branch ${newBranchName} from ${MASTER_BRANCH}. Pulling from origin...`)

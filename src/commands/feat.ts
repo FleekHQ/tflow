@@ -97,7 +97,7 @@ export default class Feat extends Command {
       validate: (name: string) => name.match(/^[0-9a-zA-Z-]+$/) ? true : false
     }])
 
-    const newBranchName = `${FEATURE_BRANCH_PREFIX}/${epicName}/${branchResponse.id}/${branchResponse.name}`
+    const newBranchName = `${FEATURE_BRANCH_PREFIX}/${epicName}/ch${branchResponse.id}/${branchResponse.name}`
 
     await git.checkoutBranch(newBranchName, genEpicBranchName(epicName))
     this.log(`Created branch ${newBranchName} from ${genEpicBranchName(epicName)}`)
